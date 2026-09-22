@@ -17,9 +17,11 @@ module "web_stack" {
 
 # Source: /reference/types/module/ — "Remote GitHub Module" pattern ("Use module
 # outputs"): referencing a module output from the parent configuration.
-# NOTE (docs finding): the docs document `module.<name>.output.<output_name>`,
-# which fails validation ('does not expose output "output"') — the working form
-# is `module.<name>.<output_name>`.
+# NOTE: the docs' `module.<name>.output.<output_name>` form is CORRECT — it is
+# what the engine evaluates. CLI builds bundling mono older than #1235
+# (2026-09-10) had an off-by-one validator bug that rejected this form and
+# accepted `module.<name>.<output_name>` instead; update the CLI if this line
+# fails validation locally.
 output "module_service_url" {
-  value = module.web_stack.service_url
+  value = module.web_stack.output.service_url
 }

@@ -61,10 +61,12 @@ output "api_result" {
   value = local.api_success ? "Success" : "Failed with status ${resource.http.api_check.status}"
 }
 
-# Source: /reference/types/resource/ — "Resource with Dependencies"
-# (string form of depends_on).
-resource "copy" "depends_string_form" {
-  depends_on = ["resource.copy.app_files"]
+# NOTE (docs finding): /reference/types/resource/ — "Resource with Dependencies"
+# documents the string form depends_on = ["resource.copy.app_files"], which the
+# validator rejects since mono #1151 (2026-09-02): "depends_on" takes
+# references, not strings. Reference form used here.
+resource "copy" "depends_reference_form" {
+  depends_on = [resource.copy.app_files]
 
   source      = "./files/html/index.html"
   destination = "./container-data/html-copy/index.html"

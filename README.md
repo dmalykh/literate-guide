@@ -78,9 +78,15 @@ reporting / SSO / webhooks product areas.
 6. **/reference/types/output|local|resource|module/** — many examples read
    `resource.container.X.meta.name`; `meta` has no field `name`. The working
    computed field is `container_name` (or `meta.id` for IDs).
-7. **/reference/types/module/** — documents module output references as
-   `module.<name>.output.<output_name>`; the validator requires
-   `module.<name>.<output_name>`.
+7. **/reference/types/resource/ and /reference/types/module/** — document the
+   string form of `depends_on` (`depends_on = ["resource.network.main"]`, type
+   `list(string)`); since mono #1151 (2026-09-02) `depends_on` takes
+   references only and quoted strings fail with `"depends_on" takes
+   references, not strings`.
+   (Note: the docs' module output reference form
+   `module.<name>.output.<output_name>` is **correct** — CLI builds bundling
+   mono older than #1235 (2026-09-10) had a validator bug that rejected it;
+   update the CLI if it fails locally.)
 8. **/reference/sandbox/ui/terminal/ ("Kubernetes Cluster Access") and
    /reference/types/output/ ("Module Resource Information")** — use
    `.kubeconfig_path`, a nonexistent field; the working attribute is
